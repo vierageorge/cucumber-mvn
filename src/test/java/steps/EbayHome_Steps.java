@@ -3,18 +3,46 @@ package steps;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 public class EbayHome_Steps {
+
+    WebDriver driver;
+
     @Given("I am on Ebay Home Page")
     public void i_am_on_ebay_home_page() {
-        System.out.println("I am on Ebay Home Page");
+        System.setProperty("webdriver.chrome.driver", "webdriver/chromedriver");
+        driver = new ChromeDriver();
+        driver.get("https://www.ebay.com/");
     }
     @When("I click on Advanced Link")
     public void i_click_on_advanced_link() {
-        System.out.println("I click on Advanced Link");
+        driver.findElement(By.id("gh-as-a")).click();
     }
     @Then("I navigate to Advanced Search Page")
     public void i_navigate_to_advanced_search_page() {
-        System.out.println("I navigate to Advanced Search Page");
+        String expectedUrl = "https://www.ebay.com/sch/ebayadvsearch";
+        String actualUrl = driver.getCurrentUrl();
+        driver.quit();
+        Assert.assertEquals("Browser didn't navigate to expected URL", expectedUrl, actualUrl);
+    }
+
+    @When("I search for iPhone 11")
+    public void iSearchForIPhone() {
+        driver.findElement(By.id("gh-ac")).sendKeys("iPhone 11");
+        driver.findElement(By.id("gh-btn")).click();
+    }
+
+    @Then("I validate at least 1000 search items present")
+    public void iValidateAtLeastSearchItemsPresent() {
+        String itemCount = driver.findElement(By.cssSelector("h1>span.BOLD:first-child")).getText().trim();
+        String itemCountClean = itemCount.replace(",", "");
+        int itemCountInt = Integer.parseInt(itemCountClean);
+        int expectedMin = 1000;
+        driver.quit();
+        Assert.assertTrue(String.format("Less that %s values were present", expectedMin), itemCountInt > expectedMin);
     }
 }
