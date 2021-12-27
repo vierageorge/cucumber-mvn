@@ -1,6 +1,7 @@
-Feature: Ebay Advanced Search Page Scenarios
+Feature: Ebay Advanced Search Page
 
-  Scenario: Ebay logo on Advanced Search
-    Given I am on Ebay Advanced Search
+  @P24
+  Scenario: Ebay Logo on Advanced Search Page
+    Given I am on Ebay Advanced Search Page
     When I click on Ebay Logo
     Then I am navigated to Ebay Home Page
