@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
+import java.util.Locale;
 
 public class EbayHomeSteps {
 
@@ -58,5 +59,17 @@ public class EbayHomeSteps {
             }
         }
         driver.findElement(By.id("gh-btn")).click();
+    }
+    @When("I click on {string}")
+    public void i_click_on(String link) {
+        driver.findElement(By.linkText(link)).click();
+    }
+
+    @Then("I validate that page navigates to {string} and title contains {string}")
+    public void i_validate_that_page_navigates_to_and_title_contains(String expectedUrl, String expectedTitleSubstring) {
+        String actualUrl = driver.getCurrentUrl();
+        String actualTitle = driver.getTitle();
+        Assert.assertEquals("Page navigated to incorrect Url", expectedUrl, actualUrl);
+        Assert.assertTrue("Title doesn't contain the expected value", actualTitle.toLowerCase().contains(expectedTitleSubstring.toLowerCase()));
     }
 }
