@@ -30,18 +30,17 @@ public class EbayHomeSteps {
         Assert.assertEquals("Browser didn't navigate to expected URL", expectedUrl, actualUrl);
     }
 
-    @When("I search for iPhone 11")
-    public void iSearchForIPhone() {
-        driver.findElement(By.id("gh-ac")).sendKeys("iPhone 11");
+    @When("I search for {string}")
+    public void i_search_for_element(String searchTerm) {
+        driver.findElement(By.id("gh-ac")).sendKeys(searchTerm);
         driver.findElement(By.id("gh-btn")).click();
     }
 
-    @Then("I validate at least 1000 search items present")
-    public void iValidateAtLeastSearchItemsPresent() {
+    @Then("I validate at least {int} search items present")
+    public void i_validate_at_least_search_items_present(int expectedMinElementCount) {
         String itemCount = driver.findElement(By.cssSelector("h1>span.BOLD:first-child")).getText().trim();
         String itemCountClean = itemCount.replace(",", "");
         int itemCountInt = Integer.parseInt(itemCountClean);
-        int expectedMin = 1000;
-        Assert.assertTrue(String.format("Less that %s values were present", expectedMin), itemCountInt > expectedMin);
+        Assert.assertTrue(String.format("Less that %s values were present", expectedMinElementCount), itemCountInt > expectedMinElementCount);
     }
 }

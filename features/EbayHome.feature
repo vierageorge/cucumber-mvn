@@ -9,5 +9,11 @@ Feature: Ebay Home Page Scenarios
   @P2
   Scenario: Search items count
     Given I am on Ebay Home Page
-    When I search for iPhone 11
+    When I search for 'iPhone 11'
     Then I validate at least 1000 search items present
+
+  @P2
+  Scenario: Search items count
+    Given I am on Ebay Home Page
+    When I search for 'samsung galaxy'
+    Then I validate at least 100 search items present
