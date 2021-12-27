@@ -1,5 +1,6 @@
 package steps;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -29,5 +30,13 @@ public class EbayAdvancedSearchSteps {
         String expectedUrl = "https://www.ebay.com/";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Browser didn't navigate to expected URL", expectedUrl, actualUrl);
+    }
+    @When("I advanced search an item")
+    public void i_advanced_search_an_item(DataTable dataTable) throws InterruptedException {
+        driver.findElement(By.id("_nkw")).sendKeys(dataTable.cell(1,0));
+        driver.findElement(By.id("_ex_kw")).sendKeys(dataTable.cell(1,1));
+        driver.findElement(By.xpath("//input[@name='_udlo']")).sendKeys(dataTable.cell(1,2));
+        driver.findElement(By.xpath("//input[@name='_udhi']")).sendKeys(dataTable.cell(1,3));
+        driver.findElement(By.id("searchBtnLowerLnk")).click();
     }
 }

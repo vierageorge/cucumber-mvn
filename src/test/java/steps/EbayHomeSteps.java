@@ -6,6 +6,9 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class EbayHomeSteps {
 
@@ -42,5 +45,18 @@ public class EbayHomeSteps {
         String itemCountClean = itemCount.replace(",", "");
         int itemCountInt = Integer.parseInt(itemCountClean);
         Assert.assertTrue(String.format("Less that %s values were present", expectedMinElementCount), itemCountInt > expectedMinElementCount);
+    }
+
+    @When("I search for {string} in {string} category")
+    public void iSearchForSoapInBabyCategory(String searchTerm, String categoryName) {
+        driver.findElement(By.id("gh-ac")).sendKeys(searchTerm);
+        List<WebElement> categoryOptions = driver.findElements(By.xpath("//select[@id='gh-cat']/option"));
+        for(WebElement categoryOption : categoryOptions){
+            if(categoryOption.getText().trim().equals(categoryName)){
+                categoryOption.click();
+                break;
+            }
+        }
+        driver.findElement(By.id("gh-btn")).click();
     }
 }

@@ -17,3 +17,9 @@ Feature: Ebay Home Page Scenarios
     Given I am on Ebay Home Page
     When I search for 'samsung galaxy'
     Then I validate at least 100 search items present
+
+  @P3
+  Scenario: Search for item in category
+    Given I am on Ebay Home Page
+    When I search for 'jabón' in 'Bebés' category
+    Then I validate at least 20 search items present
