@@ -6,16 +6,17 @@ import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 
-public class EbayHome_Steps {
+public class EbayHomeSteps {
 
-    WebDriver driver;
+    private WebDriver driver;
+
+    public EbayHomeSteps(CommonSteps commonSteps){
+        this.driver = commonSteps.getDriver();
+    }
 
     @Given("I am on Ebay Home Page")
     public void i_am_on_ebay_home_page() {
-        System.setProperty("webdriver.chrome.driver", "webdriver/chromedriver");
-        driver = new ChromeDriver();
         driver.get("https://www.ebay.com/");
     }
     @When("I click on Advanced Link")
@@ -26,7 +27,6 @@ public class EbayHome_Steps {
     public void i_navigate_to_advanced_search_page() {
         String expectedUrl = "https://www.ebay.com/sch/ebayadvsearch";
         String actualUrl = driver.getCurrentUrl();
-        driver.quit();
         Assert.assertEquals("Browser didn't navigate to expected URL", expectedUrl, actualUrl);
     }
 
@@ -42,7 +42,6 @@ public class EbayHome_Steps {
         String itemCountClean = itemCount.replace(",", "");
         int itemCountInt = Integer.parseInt(itemCountClean);
         int expectedMin = 1000;
-        driver.quit();
         Assert.assertTrue(String.format("Less that %s values were present", expectedMin), itemCountInt > expectedMin);
     }
 }

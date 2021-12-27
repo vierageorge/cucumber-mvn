@@ -9,8 +9,7 @@ import org.junit.runner.RunWith;
         features = {"features"},
         glue = {"steps"},
         strict = true,
-        plugin = {"pretty", "html:reports/Report1"},
-        tags = {"@P2"}
+        plugin = {"pretty", "html:reports/Report1"}
         //name = {"Logo"}
 )
 public class TestRunner {
