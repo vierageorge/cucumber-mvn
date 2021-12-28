@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
         glue = {"steps"},
         strict = true,
         plugin = {"pretty", "html:reports/Report1"},
-        tags = {"@P2"}
+        tags = {"@Test"}
         //name = {"Logo"}
 )
 public class TestRunner {

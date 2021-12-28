@@ -9,21 +9,18 @@ public class CommonSteps {
 
     private WebDriver driver;
 
-    @Before
+    @Before(order = 0)
     public void setUp(){
         System.setProperty("webdriver.chrome.driver", "webdriver/chromedriver");
         driver = new ChromeDriver();
+        System.out.println("Global before hook");
     }
 
-    @After
+    @After(order = 1)
     public void tearDown() throws Exception {
         driver.quit();
         Thread.sleep(1000);
-    }
-
-    @Before("@setCookies")
-    public void setCookies(){
-        System.out.println("Setting some cookies over here...");
+        System.out.println("Global after hook");
     }
 
     public WebDriver getDriver(){
