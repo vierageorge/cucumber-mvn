@@ -1,74 +1,65 @@
 package steps;
 
+import actions.CommonActions;
+import actions.EbayHomeActions;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
-import java.util.List;
-import java.util.Locale;
 
 public class EbayHomeSteps {
 
-    private WebDriver driver;
+    CommonActions commonActions;
+    EbayHomeActions ebayHomeActions;
 
-    public EbayHomeSteps(CommonSteps commonSteps){
-        this.driver = commonSteps.getDriver();
+    public EbayHomeSteps( CommonActions commonActions, EbayHomeActions ebayHomeActions){
+        this.commonActions = commonActions;
+        this.ebayHomeActions = ebayHomeActions;
     }
 
     @Given("I am on Ebay Home Page")
     public void i_am_on_ebay_home_page() {
-        driver.get("https://www.ebay.com/");
+        commonActions.goToUrl("https://www.ebay.com/");
     }
     @When("I click on Advanced Link")
     public void i_click_on_advanced_link() {
-        driver.findElement(By.id("gh-as-a")).click();
+        ebayHomeActions.clickAdvancedLink();
     }
     @Then("I navigate to Advanced Search Page")
     public void i_navigate_to_advanced_search_page() {
         String expectedUrl = "https://www.ebay.com/sch/ebayadvsearch";
-        String actualUrl = driver.getCurrentUrl();
+        String actualUrl = commonActions.getCurrentPageUrl();
         Assert.assertEquals("Browser didn't navigate to expected URL", expectedUrl, actualUrl);
     }
 
     @When("I search for {string}")
     public void i_search_for_element(String searchTerm) {
-        driver.findElement(By.id("gh-ac")).sendKeys(searchTerm);
-        driver.findElement(By.id("gh-btn")).click();
+        ebayHomeActions.searchAnItem(searchTerm);
+        ebayHomeActions.clickSearchButton();
     }
 
     @Then("I validate at least {int} search items present")
     public void i_validate_at_least_search_items_present(int expectedMinElementCount) {
-        String itemCount = driver.findElement(By.cssSelector("h1>span.BOLD:first-child")).getText().trim();
-        String itemCountClean = itemCount.replace(",", "");
-        int itemCountInt = Integer.parseInt(itemCountClean);
+        int itemCountInt = ebayHomeActions.getSearchItemsCount();
         Assert.assertTrue(String.format("Less that %s values were present", expectedMinElementCount), itemCountInt > expectedMinElementCount);
     }
 
     @When("I search for {string} in {string} category")
     public void iSearchForSoapInBabyCategory(String searchTerm, String categoryName) {
-        driver.findElement(By.id("gh-ac")).sendKeys(searchTerm);
-        List<WebElement> categoryOptions = driver.findElements(By.xpath("//select[@id='gh-cat']/option"));
-        for(WebElement categoryOption : categoryOptions){
-            if(categoryOption.getText().trim().equals(categoryName)){
-                categoryOption.click();
-                break;
-            }
-        }
-        driver.findElement(By.id("gh-btn")).click();
+        ebayHomeActions.searchAnItem(searchTerm);
+        ebayHomeActions.selectCategoryOptions(categoryName);
+        ebayHomeActions.clickSearchButton();
     }
     @When("I click on {string}")
     public void i_click_on(String link) {
-        driver.findElement(By.linkText(link)).click();
+        ebayHomeActions.clickOnLink(link);
     }
 
     @Then("I validate that page navigates to {string} and title contains {string}")
     public void i_validate_that_page_navigates_to_and_title_contains(String expectedUrl, String expectedTitleSubstring) {
-        String actualUrl = driver.getCurrentUrl();
-        String actualTitle = driver.getTitle();
+        String actualUrl = commonActions.getCurrentPageUrl();
+        String actualTitle = commonActions.getCurrentPageTitle();
         Assert.assertEquals("Page navigated to incorrect Url", expectedUrl, actualUrl);
         Assert.assertTrue("Title doesn't contain the expected value", actualTitle.toLowerCase().contains(expectedTitleSubstring.toLowerCase()));
     }
