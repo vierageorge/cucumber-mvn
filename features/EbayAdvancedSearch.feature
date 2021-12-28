@@ -6,7 +6,7 @@ Feature: Ebay Advanced Search Page
     When I click on Ebay Logo
     Then I am navigated to Ebay Home Page
 
-  @P4
+  @P4 @setCookies
   Scenario: Advanced Search an Item
     Given I am on Ebay Advanced Search Page
     When I advanced search an item

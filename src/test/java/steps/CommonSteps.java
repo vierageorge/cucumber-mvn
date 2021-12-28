@@ -21,6 +21,11 @@ public class CommonSteps {
         Thread.sleep(1000);
     }
 
+    @Before("@setCookies")
+    public void setCookies(){
+        System.out.println("Setting some cookies over here...");
+    }
+
     public WebDriver getDriver(){
         return driver;
     }
